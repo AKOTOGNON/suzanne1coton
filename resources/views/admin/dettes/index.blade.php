@@ -27,10 +27,10 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-
-                    <th>Nom des Paysans</th>
-                    <th>Nom du Produit</th>
-                    <th>Actions</th>
+                <th>Redevable</th>
+                <th>Nom des Paysans</th>
+                <th>Nom du Produit</th>
+                <th>Actions</th>
                 </tr>
             </thead>
             <tbody>

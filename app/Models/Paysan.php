@@ -14,11 +14,10 @@ class Paysan extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function ventes()
+    public function dette()
     {
-        return $this->hasMany(Vente::class);
+        return $this->hasOne(Dette::class);
     }
-
     public function carnets()
     {
         return $this->hasMany(Carnet::class);

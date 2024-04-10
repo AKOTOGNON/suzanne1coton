@@ -41,10 +41,10 @@ class User extends Authenticatable
     ];
 
 
-public function paysans()
-{
-    return $this->hasMany(Paysan::class);
-}
+    public function paysans()
+    {
+        return $this->hasMany(Paysan::class);
+    }
     public function produits()
     {
         return $this->hasMany(Produit::class);
@@ -55,6 +55,7 @@ public function paysans()
 {
     return $this->hasMany(Vente::class); // Utiliser hasMany si un utilisateur peut avoir plusieurs ventes
 }
+
 
 
 }

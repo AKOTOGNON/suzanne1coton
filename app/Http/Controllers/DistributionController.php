@@ -19,15 +19,14 @@ class DistributionController extends Controller
         return view('admin.distributions.index', compact('distributions'));
     }
 
-    public function create()
-{
-    $user = Auth::user();
-
-     $paysans = $user->paysans()->with('user')->get(); // Paysans créés par l'utilisateur avec utilisateur
-    $produits = $user->produits()->with('user')->get(); // Produits créés par l'utilisateur avec utilisateur
-
-    return view('admin.distributions.create', compact('paysans', 'produits'));
-}
+   public function create()
+    {
+        // Récupérer tous les produits de l'utilisateur connecté
+        $produits = Produit::where('user_id', auth()->id())->get();
+        // Récupérer tous les paysans de l'utilisateur connecté
+        $paysans = Paysan::where('user_id', auth()->id())->get();
+        return view('admin.distributions.create', compact('produits', 'paysans'));
+    }
 
     // **Fonction de stockage:**
     // Valide les données du formulaire

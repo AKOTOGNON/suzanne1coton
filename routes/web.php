@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\StockAdmin;
+use App\Models\StockSecretaire;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ZoneController;
 use App\Http\Controllers\AnneeController;
@@ -9,11 +11,17 @@ use App\Http\Controllers\VenteController;
 use App\Http\Controllers\CarnetController;
 use App\Http\Controllers\PaysanController;
 use App\Http\Controllers\SaisonController;
+use App\Http\Controllers\CommuneController;
 use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PayementController;
+use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\DistributionController;
+use App\Http\Controllers\StockSecretaireController;
+use App\Http\Controllers\Admin\StockadminController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\StockAdministrateurController;
+use App\Http\Controllers\StockAdminController as ControllersStockAdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,7 +74,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 
 
@@ -110,6 +118,26 @@ Route::delete('/dettes/{dette}', [DetteController::class, 'destroy'])->name('adm
 
 
 
+
+
+Route::get('/admin/stockadministrateurs', [StockAdministrateurController::class,  'index'])->name('admin.stockadministrateurs.index');
+Route::get('/admin/stockadministrateurs/create', [StockAdministrateurController::class, 'create'])->name('admin.stockadministrateurs.create');
+Route::post('/admin/stockadministrateurs', [StockAdministrateurController::class, 'store'])->name('admin.stockadministrateurs.store');
+Route::get('/stockadministrateurs/{stockadministrateur}', [StockAdministrateurController::class, 'show'])->name('admin.stockadministrateurs.show');
+Route::get('/admin/stockadministrateurs/{stockadministrateur}/edit', [StockAdministrateurController::class, 'dette'])->name('admin.stockadministrateurs.edit');
+Route::put('/admin/stockadministrateurs/{stockadministrateur}', [StockAdministrateurController::class, 'update'])->name('admin.stockadministrateurs.update');
+Route::delete('/stockadministrateurs/{stockadministrateur}', [StockAdministrateurController::class, 'destroy'])->name('admin.stockadministrateurs.destroy');
+
+
+Route::get('/admin/stocksecretaires', [StockSecretaireController::class,  'index'])->name('admin.stocksecretaires.index');
+
+
+Route::get('/select-departement', [DepartementController::class, 'index']);
+Route::get('/get-communes/{departementId}', [DepartementController::class, 'getCommunes']);
+
+
+
+
 Route::prefix('admin')->group(function () {
     Route::get('/ventes', [VenteController::class, 'index'])->name('admin.ventes.index');
     Route::get('/ventes/create', [VenteController::class, 'create'])->name('admin.ventes.create');
@@ -120,3 +148,12 @@ Route::prefix('admin')->group(function () {
     Route::delete('/ventes/{vente}', [VenteController::class, 'destroy'])->name('admin.ventes.destroy');
 });
 
+
+// Routes pour les paiements
+Route::get('/admin/payements', [PayementController::class, 'index'])->name('admin.payements.index');
+Route::get('/admin/payements/create', [PayementController::class, 'create'])->name('admin.payements.create');
+Route::post('/admin/payements', [PayementController::class, 'store'])->name('admin.payements.store');
+Route::get('/admin/payements/{payement}', [PayementController::class, 'show'])->name('admin.payements.show');
+Route::get('/admin/payements/{payement}/edit', [PayementController::class, 'edit'])->name('admin.payements.edit');
+Route::put('/admin/payements/{payement}', [PayementController::class, 'update'])->name('admin.payements.update');
+Route::delete('admin/payements/{payement}', [PayementController::class, 'destroy'])->name('admin.payements.destroy');

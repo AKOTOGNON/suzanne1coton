@@ -18,4 +18,6 @@ class Vente extends Model
         return $this->belongsTo(Paysan::class);
     }
 
+    
+
 }

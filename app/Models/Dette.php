@@ -25,4 +25,9 @@ class Dette extends Model
         return $this->belongsTo(Produit::class);
     }
 
+    public function vente()
+    {
+        return $this->belongsTo(Vente::class);
+    }
+
 }

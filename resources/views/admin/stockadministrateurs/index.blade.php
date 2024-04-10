@@ -30,25 +30,41 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Nom</th>
+                            <th>quantite stock</th>
+                            <th>commune</th>
+                            <th>departement</th>
+                            <th>nom du produit</th>
+
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($produits as $produit)
+                        @foreach ($stockadministrateurs as $stockadministrateur)
+
+
                         <tr>
-                            <td>{{ $produit->nom_produit }}</td>
+                            <td>{{ $stockadministrateur->quantite }}</td>
+                             <td>{{ $stockadministrateur->commune }}</td>
+                              <td>{{ $stockadministrateur->departement }}</td>
+                              <td>{{ $stockadministrateur->produit->nom_produit }}</td>
+
+
+
 
                             <td>
-                                <a href="{{ route('admin.produits.show', $produit->id) }}">
+                                <a href="{{ route('admin.stockadministrateurs.show', $stockadministrateur->id) }}">
+
+
                                     <button class="btn btn-primary">Voir</button>
                                 </a>
 
-                                <a href="{{ route('admin.produits.edit', $produit->id) }}" class="edit">
+                                <a href="{{ route('admin.stockadministrateurs.edit', $stockadministrateur->id) }}" class="edit">
                                     <button class="btn btn-primary">modifier</button>
                                 </a>
 
-                                <form action="{{ route('admin.produits.destroy', $produit->id) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce paysan ?')" style="display: inline-block;">
+                                <form action="{{ route('admin.stockadministrateurs.destroy', $stockadministrateur->id) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce paysan ?')" style="display: inline-block;">
+
+
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Supprimer</button>

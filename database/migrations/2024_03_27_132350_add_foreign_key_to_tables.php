@@ -20,15 +20,22 @@ return new class extends Migration
         });
 
 
-      Schema::table('stockadmins', function (Blueprint $table) {
+      Schema::table('stock_administrateurs', function (Blueprint $table) {
             $table->unsignedBigInteger('produit_id');
             $table->foreign('produit_id')->references('id')->on('produits');
+
+
+            $table->unsignedBigInteger('user_id')->after('produit_id');
+            $table->foreign('user_id')->references('id')->on('users');
         });
 
 
-        Schema::table('stocksecretaires', function (Blueprint $table) {
-            $table->unsignedBigInteger('produit_id');
+        Schema::table('stock_secretaires', function (Blueprint $table) {
+             $table->unsignedBigInteger('produit_id');
             $table->foreign('produit_id')->references('id')->on('produits');
+
+             $table->unsignedBigInteger('user_id')->after('produit_id');
+            $table->foreign('user_id')->references('id')->on('users');;
         });
 
 
@@ -69,16 +76,19 @@ return new class extends Migration
         });
 
 
-
-          Schema::table('payements', function (Blueprint $table) {
-             $table->unsignedBigInteger('paysan_id');
+Schema::table('payements', function (Blueprint $table) {
+            $table->unsignedBigInteger('paysan_id');
             $table->foreign('paysan_id')->references('id')->on('paysans');
 
             $table->unsignedBigInteger('dette_id');
             $table->foreign('dette_id')->references('id')->on('dettes');
 
-             $table->unsignedBigInteger('vente_id');
+            $table->unsignedBigInteger('vente_id');
             $table->foreign('vente_id')->references('id')->on('ventes');
+        });
+
+         Schema::table('dettes', function (Blueprint $table) {
+            $table->foreignId('user_id')->after('id')->constrained()->onDelete('cascade');
         });
 
     }
@@ -93,13 +103,26 @@ return new class extends Migration
 
         });
 
-
+Schema::table('dettes', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+            $table->dropColumn('user_id');
+        });
 
 
         Schema::table('distributions', function (Blueprint $table) {
             $table->dropColumn('paysan_id');
             $table->dropColumn('produit_id');
         });
+
+
+         Schema::table('stoks_administrateurs', function (Blueprint $table) {
+            $table->dropColumn('produit_id');
+        });
+
+        Schema::table('stoks_secretaire', function (Blueprint $table) {
+            $table->dropColumn('produit_id');
+        });
+
           Schema::table('paysans', function (Blueprint $table) {
             $table->dropColumn('user_id');
         });
@@ -120,3 +143,5 @@ return new class extends Migration
         });
     }
 };
+
+

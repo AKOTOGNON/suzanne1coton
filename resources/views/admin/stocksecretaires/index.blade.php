@@ -30,31 +30,25 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Nom</th>
-                            <th>Actions</th>
+                            <th>quantite stock</th>
+                            <th>nom du produit</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($produits as $produit)
+                        @foreach ($stocksecretaires as $stocksecretaire)
+
+
                         <tr>
-                            <td>{{ $produit->nom_produit }}</td>
+                            <td>{{ $stocksecretaire->quantite }}</td>
+                            <td>{{ $stocksecretaire->produit->nom_produit }}</td>
+
+
+
+
 
                             <td>
-                                <a href="{{ route('admin.produits.show', $produit->id) }}">
-                                    <button class="btn btn-primary">Voir</button>
-                                </a>
 
-                                <a href="{{ route('admin.produits.edit', $produit->id) }}" class="edit">
-                                    <button class="btn btn-primary">modifier</button>
-                                </a>
-
-                                <form action="{{ route('admin.produits.destroy', $produit->id) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce paysan ?')" style="display: inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">Supprimer</button>
-                                </form>
                             </td>
-
 
                         </tr>
                         @endforeach

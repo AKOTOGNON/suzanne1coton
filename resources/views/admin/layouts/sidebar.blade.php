@@ -1,4 +1,3 @@
-   
    <div class="vertical-menu">
 
                 <div data-simplebar class="h-100">
@@ -8,7 +7,6 @@
                         <!-- Left Menu Start -->
                         <ul class="metismenu list-unstyled" id="side-menu">
                             <li class="menu-title" key="t-menu">Menu</li>
-                            <?php foreach ($filteredMenuItems as $menuItem): ?>
 
                             <li>
                                 <a href="javascript: void(0);" class="waves-effect">
@@ -16,8 +14,7 @@
                                     <span key="t-dashboards">Dashboards</span>
                                 </a>
                             </li>
-                            
-                            
+
 
                             <li>
                                 <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -43,6 +40,32 @@
                                     <li><a href="{{ route('admin.produits.index') }}" key="t-product-detail">Liste Produit</a></li>
                                 </ul>
                             </li>
+
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="bx bx-store"></i>
+                                    <span key="t-ecommerce">Stockadmin</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+
+                                    <li><a href="{{ route('admin.stockadministrateurs.create') }}" key="t-products">Create Stocks</a></li>
+                                    <li><a href="{{ route('admin.stockadministrateurs.index') }}" key="t-product-detail">Liste STOCKS</a></li>
+
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="bx bx-store"></i>
+                                    <span key="t-ecommerce">Stocksecretaires</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="{{ route('admin.stocksecretaires.index') }}" key="t-product-detail">Liste stockSecretaires</a></li>
+
+                                </ul>
+                            </li>
+
+
 
                             <li>
                                 <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -80,41 +103,14 @@
                                 </ul>
                             </li>
 
-
-
-
-
-                            <li>
-                                <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                    <i class="bx bx-store"></i>
-                                    <span key="t-ecommerce">Stocks</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href=" " key="t-inbox">Create Stocks</a></li>
-                                    <li><a href="" key="t-read-email">Liste Stocks</a></li>
-                                </ul>
-                            </li>
-
-
-
-                            <li>
-                                <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                    <i class="bx bx-briefcase-alt-2"></i>
-                                    <span key="t-projects">Annnee</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="projects-grid.html" key="t-p-grid">Fermer</a></li>
-                                </ul>
-                            </li>
-
                             <li>
                                 <a href="javascript: void(0);" class="has-arrow waves-effect">
                                     <i class="bx bx-aperture"></i>
                                     <span key="t-icons">Payement</span>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="" key="t-boxicons">Create Payement</a></li>
-                                    <li><a href="" key="t-material-design">Material Design</a></li>
+                                    <li><a href="{{ route('admin.payements.create') }}" key="t-boxicons">Create Payement</a></li>
+                                    <li><a href="{{ route('admin.payements.index') }}" key="t-material-design">liste</a></li>
 
                                 </ul>
                             </li>

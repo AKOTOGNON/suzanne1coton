@@ -1,5 +1,6 @@
 @extends('admin.layouts.template')
 @section('content')
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,9 +17,9 @@
     <!-- App Css-->
     <link href="{{ asset('admin/assets/css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
 
-
 </head>
 <body>
+
 
 
 

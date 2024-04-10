@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('stocksecretaires', function (Blueprint $table) {
+        Schema::create('stock_secretaires', function (Blueprint $table) {
             $table->id();
             $table->string('q_stock');
+            $table->string('commune');
             $table->timestamps();
         });
     }
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('stocksecretaires');
+        Schema::dropIfExists('stock_secretaires');
     }
 };

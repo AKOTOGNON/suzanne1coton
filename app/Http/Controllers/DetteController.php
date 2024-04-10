@@ -10,71 +10,98 @@ use Illuminate\Support\Facades\Auth;
 
 class DetteController extends Controller
 {
-   public function index()
-{
-    $user = Auth::user();
-
-    // Récupérer les paysans enregistrés par l'utilisateur actuel
-    $paysans = $user->paysans()->get();
-
-    // Récupérer les dettes des paysans
-    $dettes = Dette::whereIn('paysan_id', $paysans->pluck('id'))->with('paysan', 'produit')->get();
-
-    return view('admin.dettes.index', compact('dettes'));
-}
-
-
+    public function index()
+    {
+        // Récupérer toutes les dettes de l'utilisateur connecté
+        $dettes = Dette::where('user_id', auth()->id())->get();
+        return view('admin.dettes.index', compact('dettes'));
+    }
 
     public function create()
-{
-    $paysans = Paysan::all();
-    $produits = Produit::all();
-
-    return view('admin.dettes.create', compact('paysans', 'produits'));
-}
+    {
+        // Récupérer tous les produits de l'utilisateur connecté
+        $produits = Produit::where('user_id', auth()->id())->get();
+        // Récupérer tous les paysans de l'utilisateur connecté
+        $paysans = Paysan::where('user_id', auth()->id())->get();
+        return view('admin.dettes.create', compact('produits', 'paysans'));
+    }
 
     public function store(Request $request)
     {
-
+        // Valider les données du formulaire
         $request->validate([
-            'redevable'=>'required',
-            'paysan_id' => 'required|exists:paysans,id',
-            'produit_id' => 'nullable|exists:produits,id',
-
+            'redevable' => 'required',
+            'produit_id' => 'required',
+            'paysan_id' => 'required',
+            // Autres règles de validation
         ]);
 
-        Dette::create([
-            'redevable'=>$request->redevable,
-            'paysan_id'=>$request->paysan_id,
-            'produit_id'=>$request->produit_id
-        ]);
+        // Créer une nouvelle dette associée à l'utilisateur connecté, au produit et au paysan
+        $dette = new Dette();
+        $dette->redevable = $request->redevable;
+        $dette->produit_id = $request->produit_id;
+        $dette->paysan_id = $request->paysan_id;
+        $dette->user_id = auth()->id();
+        // Définir d'autres champs de dette à partir des données du formulaire
+        $dette->save();
+
+        // Rediriger avec un message de succès
         return redirect()->route('admin.dettes.index')->with('success', 'Dette créée avec succès.');
     }
 
-    public function show(Dette  $dette,)
-    {
-         return view('admin.dettes.show', compact('dette'));
-
+    public function edit(Dette $dette)
+{
+    // Vérifier si l'utilisateur connecté est le créateur de la dette, du produit et du paysan
+    if ($dette->user_id === auth()->id() && $dette->produit->user_id === auth()->id() && $dette->paysan->user_id === auth()->id()) {
+        // L'utilisateur est le créateur, donc affiche le formulaire d'édition de la dette
+        $produits = Produit::where('user_id', auth()->id())->get();
+        $paysans = Paysan::where('user_id', auth()->id())->get();
+        return view('admin.dettes.edit', compact('dette', 'produits', 'paysans'));
+    } else {
+        // L'utilisateur n'est pas autorisé à modifier cette dette
+        abort(403, 'Unauthorized action.');
     }
+}
 
-      public function edit(Dette $dette)
-    {
-        $dette = Dette::with('paysan', 'produit')->find($dette->id);
+public function update(Request $request, Dette $dette)
+{
+    // Vérifier si l'utilisateur connecté est le créateur de la dette, du produit et du paysan
+    if ($dette->user_id === auth()->id() && $dette->produit->user_id === auth()->id() && $dette->paysan->user_id === auth()->id()) {
+        // Valider les données du formulaire
+        $request->validate([
+            'produit_id' => 'required',
+            'paysan_id' => 'required',
+            // Autres règles de validation
+        ]);
 
-        return view('admin.dettes.edit', compact('dette'));
+        // Mettre à jour les champs de la dette
+        $dette->produit_id = $request->produit_id;
+        $dette->paysan_id = $request->paysan_id;
+        // Mettre à jour d'autres champs de dette à partir des données du formulaire
+        $dette->save();
+
+        // Rediriger avec un message de succès
+        return redirect()->route('admin.dettes.index')->with('success', 'Dette mise à jour avec succès.');
+    } else {
+        // L'utilisateur n'est pas autorisé à modifier cette dette
+        abort(403, 'Unauthorized action.');
     }
+}
 
-    public function update( $request, Dette $dette)
-    {
-        $dette->update($request->validated());
-
-        return Redirect()->route('admin.dettes.index')->with('success', 'Distribution modifiée avec succès!');
-    }
-
-     public function destroy(Dette $dette)
-    {
+public function destroy(Dette $dette)
+{
+    // Vérifier si l'utilisateur connecté est le créateur de la dette, du produit et du paysan
+    if ($dette->user_id === auth()->id() && $dette->produit->user_id === auth()->id() && $dette->paysan->user_id === auth()->id()) {
+        // Supprimer la dette
         $dette->delete();
 
+        // Rediriger avec un message de succès
         return redirect()->route('admin.dettes.index')->with('success', 'Dette supprimée avec succès.');
+    } else {
+        // L'utilisateur n'est pas autorisé à supprimer cette dette
+        abort(403, 'Unauthorized action.');
     }
+}
+
+    // Autres méthodes comme show, edit, update, destroy...
 }

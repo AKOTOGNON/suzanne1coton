@@ -5,16 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Stockadmin extends Model
+class StockAdministrateur extends Model
 {
     use HasFactory;
-    protected $guarded = [];
-       public function user()
+     protected $guarded = [];
+
+      public function user()
     {
         return $this->belongsTo(User::class);
     }
-     public function produits()
+
+
+  public function produit()
     {
-        return $this->hasMany(Produit::class);
+        return $this->belongsTo(Produit::class);
     }
 }

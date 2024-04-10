@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Commune;
+use App\Models\Departement;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,11 +15,37 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        $departements = ["Zou", "Collines", "Mono", "Couffo", "Atacora", "Donga", "Alibora", "Borgou", "Ouémé", "Plateau", 'Atlantique', 'Littoral'];
+        foreach ($departements as $departement) {
+            if (!Departement::where('nom', $departement)->exists()) {
+                Departement::create([
+                    'nom' => $departement
+                ]);
+            }
+        }
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+
+        $communes_collines = ["Ouesse", "Savè", "Glazoué", "Savalou", "Bantè", "Dassa-zoumè"];
+        $communes_zou = ["Bohicon", "Agbanhizoun", "Abomey", "Djidja", "Cove", "Ouinhi", "Zangnanado"];
+
+        foreach ($communes_collines as $commune) {
+            if (!Commune::where('nom', $commune)->exists()) {
+                $departement = Departement::where('nom', 'Collines')->first();
+                Commune::create([
+                    'nom' => $commune,
+                    'departement_id' => $departement->id
+                ]);
+            }
+        }
+
+        foreach ($communes_zou as $commune) {
+            if (!Commune::where('nom', $commune)->exists()) {
+                $departement = Departement::where('nom', 'Zou')->first();
+                Commune::create([
+                    'nom' => $commune,
+                    'departement_id' => $departement->id
+                ]);
+            }
+        }
     }
 }

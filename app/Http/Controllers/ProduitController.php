@@ -8,14 +8,13 @@ use Illuminate\Support\Facades\Auth;
 
 class ProduitController extends Controller
 {
-     public function index()
+    public function index()
     {
-        $user = Auth::user(); // recuperer l'utilisateur qui est connecter
+        $user = Auth::user(); // récupérer l'utilisateur connecté
 
         $produits = Produit::where('user_id', $user->id)->get(); // Filtrer par l'ID utilisateur
         return view('admin.produits.index', compact('produits'));
     }
-
 
 
     public function create()
@@ -28,13 +27,12 @@ class ProduitController extends Controller
     {
 
         $request->validate([
-            'nom_produit'=>'required',
+            'nom_produit' => 'required|unique:produits,nom_produit,NULL,id,user_id,' . Auth::id(),
         ]);
 
         Produit::create([
-            'nom_produit'=>$request->nom_produit,
-            'user_id' => Auth::user()->id, // Recuperer l'utilisateur authentifier
-
+            'nom_produit' => $request->nom_produit,
+            'user_id' => Auth::id(), // Récupérer l'utilisateur authentifié
         ]);
 
          return redirect()->route('admin.produits.index');

@@ -34,7 +34,9 @@ class PaysanController extends Controller
         $request->validate([
             'nom'=>'required',
             'prenom'=>'required',
-            'numero'=>'required',
+            // Utilisez la règle unique sur la combinaison du numero
+            'numero' => 'required|unique:paysans,numero,NULL,id,numero,' . $request->input('numero'),
+
 
 
         ]);

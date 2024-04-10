@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Commune;
+use App\Models\Departement;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -15,7 +17,7 @@ use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
-     public function index()
+    public function index()
     {
 
         return view('auth.login');
@@ -28,7 +30,10 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        $communes = Commune::all();
+        $departements = Departement::all();
+
+        return view('auth.register', compact('communes', 'departements'));
     }
 
     /**
@@ -40,14 +45,14 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],'commune' => ['required'], // Assurez-vous que la commune est requise
         ]);
 
-         // Vérifier si l'utilisateur existe déjà
-    if (User::where('email', $request->email)->exists()) {
-        return back()->withErrors(['email' => 'ce utilisateur existe déjà.']);
-    }
+        // Vérifier si l'utilisateur existe déjà
+        if (User::where('email', $request->email)->exists()) {
+            return back()->withErrors(['email' => 'ce utilisateur existe déjà.']);
+        }
 
         $user = User::create([
             'name' => $request->name,
@@ -67,6 +72,4 @@ class RegisteredUserController extends Controller
 
         //return redirect(RouteServiceProvider::HOME);
     }
-
-
 }
